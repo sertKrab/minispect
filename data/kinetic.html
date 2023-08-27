@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+  <head>
+    <title>MINISPECTRO</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+
+    <link rel="stylesheet" href="w3.css" />
+
+    <link rel="stylesheet" href="style.css" />
+    <script src="RGraph.common.core.js" ></script>
+    <script src="RGraph.line.js" ></script>
+    <style>
+      html,
+      body,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: sans-serif;
+      }
+      .w3-sidebar {
+        z-index: 3;
+        width: 250px;
+        top: 43px;
+        bottom: 0;
+        height: inherit;
+      }
+    </style>
+
+    <script>
+      $(document).ready(function() {
+
+       
+  
+        $("button#Blank").click(function() {
+          if (confirm("ยืนยันการตั้งค่าBlank")) {
+            var data = "";
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                data = this.responseText;
+              }
+            };
+            xhttp.open("GET", "/blank", true);
+            xhttp.send();
+          }
+        });
+
+        $("button#Start").click(function() {
+        
+            var data = "";
+            var str_file = $( "#savename" ).val();
+            var str_time = $( "#time" ).val();
+            if(!str_file.match(/^([.a-z0-9])+$/i))
+        {
+          alert("กรอกไฟล์เฉพาะตัวเลขและตัวอักษรภาษาอังกฤษเท่านั้น");
+        }else{
+          if (str_file.length == 0) {
+             
+             alert("ไม่พบไฟล์ที่บันทึก");
+             
+        }else{
+
+         var xhttp = new XMLHttpRequest();
+           xhttp.onreadystatechange = function() {
+             if (this.readyState == 4 && this.status == 200) {
+               data = this.responseText;
+               document.getElementById("Start").innerHTML = data;
+               
+             }
+           };
+           xhttp.open("GET", "/start_kin?file_name="+str_file+"&time="+str_time, true);
+           xhttp.send();
+
+        }
+        }
+           
+
+
+            
+         
+          
+        });
+        $("button#Export").click(function() {
+        
+        var data = "";
+        var str_file = $( "#savename" ).val();
+     
+        if(!str_file.match(/^([.a-z0-9])+$/i))
+        {
+          alert("กรอกไฟล์เฉพาะตัวเลขและตัวอักษรภาษาอังกฤษเท่านั้น");
+        }else{
+          if (str_file.length == 0){
+          alert("ไม่พบไฟล์ที่ที่ต้องการ");
+        }else{
+
+          
+        var req = new XMLHttpRequest();
+        req.open("GET", "/export?file_name=" + str_file, true);
+        req.responseType = "blob";
+        req.onload = function (event) {
+        var blob = req.response;
+
+        var fileName = req.getResponseHeader("fileName"); //if you have the fileName header available
+        var link=document.createElement('a');
+      
+        link.href=window.URL.createObjectURL(blob);
+        link.download=str_file;
+        link.click();
+        };
+
+        req.send();
+
+        }
+        }
+        
+
+
+
+      
+    });
+
+
+        
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Top container -->
+    <div class="w3-bar w3-top w3-blue-gray w3-large" style="z-index:4">
+      <button
+        class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey"
+        onclick="w3_open();"
+      >
+        Menu
+      </button>
+      <span class="w3-bar-item w3-right">Linotech</span>
+    </div>
+    <!-- Sidebar/menu -->
+    <nav
+      class="w3-sidebar w3-collapse w3-white w3-animate-left"
+      style="z-index:3;width:300px;"
+      id="mySidebar"
+    >
+      <br />
+      <div class="w3-container w3-row">
+        <div class="w3-col s8 w3-bar"><span>MINISPECTRO</span><br /></div>
+      </div>
+      <hr />
+      <div class="w3-container"><h5>MINISPECTRO</h5></div>
+      <div class="w3-bar-block">
+        <a
+          href="#"
+          class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black"
+          onclick="w3_close()"
+          title="close menu"
+          ><i class="fa fa-remove fa-fw"></i> Close Menu</a
+        >
+        <a href="index.html" class="w3-bar-item w3-button w3-padding ">
+          ABS</a
+        >
+        <a href="concen.html" class="w3-bar-item w3-button w3-padding">
+          CONCENTRATION</a
+        >
+        <a href="cal.html" class="w3-bar-item w3-button w3-padding ">
+          CALCULATION</a
+        >
+        <a href="kinetic.html" class="w3-bar-item w3-button w3-padding w3-blue">
+          KINETIC</a
+        >
+        <a href="source.html" class="w3-bar-item w3-button w3-padding">
+          Light SOURCE</a
+        
+      
+        ><br /><br />
+      </div>
+    </nav>
+
+    <!-- Overlay effect when opening sidebar on small screens -->
+    <div
+      class="w3-overlay w3-hide-large w3-animate-opacity"
+      onclick="w3_close()"
+      style="cursor:pointer"
+      title="close side menu"
+      id="myOverlay"
+    ></div>
+    <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+      <!-- Header -->
+      <header class="w3-container" style="padding-top:22px">
+        <h5><b> My Absortion</b></h5>
+      </header>
+      <div class="w3-row-padding w3-margin-bottom ">
+          <div style="text-align:center; font-weight: bold; font-size: 14pt; width: 600px">
+              <h3 style ="display: inline; color:red" >S1 = </h3>
+                <h3 id="s1"  style ="display: inline; color: red" >0</h3>
+                <h3 style ="display: inline; color: green" >&nbsp &nbsp S2=</h3>
+                <h3 style ="display: inline; color: green"  id="s2">0</h3>
+                <h3 style ="display: inline; color: blue">&nbsp &nbsp S3=</h3>
+                <h3 style ="display: inline; color: blue" id="s3">0</h3>
+              <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+
+
+          </div>
+          
+
+         
+            <div class="w3-quarter">
+                <p>
+                  <button
+                    id="Blank"
+                    class="w3-button w3-xlarge w3-round w3-block w3-dark-grey w3-center-align"
+                  >
+                    Blank
+                  </button>
+                </p>
+              </div>
+              <div class="w3-quarter ">
+                <p>
+                  <button
+                    id="Start"
+                    class="w3-button w3-xlarge w3-round  w3-block w3-dark-grey w3-center-align"
+                  >
+                  Start
+                  </button>
+                </p>
+              </div>
+          <br>  <br> <br> <br>
+        
+
+            <div class="w3-quarter ">
+                <p>
+                  <button
+                    id="Export"
+                    class="w3-button w3-xlarge w3-round  w3-block w3-dark-grey w3-center-align"
+                  >
+                  Export
+                  </button>
+                </p>
+              </div>
+            <div class="w3-quarter ">
+
+                <span>
+                    File name
+                    <input class="w3-input w3-blue-gray  w3-mobile " id="savename" type="text" value=""/>
+                </span>
+                <span>
+                        Time
+                        <input class="w3-input w3-blue-gray  w3-mobile " id="time" type="number" value="1"/>
+              </span>
+                
+             
+
+               
+             
+             
+          </div>
+           
+         
+           
+           
+    
+      </div>
+
+      
+        
+        <script>
+                window.onload = function ()
+                {
+                    var RG        = RGraph,
+                        ma        = Math,
+                        canvas    = document.getElementById("cvs"),
+                        obj       = null,
+                        data      = [],
+                        data1      = [],
+                        data2      = [],
+                        l         = 0, // The letter 'L' - NOT a one
+                        numvalues = 1200,
+                        updates   = 0;
+        
+                    // Pre-pad the arrays with null values
+                    for (var i=0; i<numvalues; ++i) {
+                        data.push(null);
+                        data1.push(null);
+                        data2.push(null);
+                    }
+                
+                    function drawGraph ()
+                    {
+                        RG.Clear(canvas);
+                        
+        
+                        if (!obj) {
+                            obj = new RG.Line({
+                                    id: 'cvs',
+                                data: [data,data1,data2],
+                                options: {
+                                    colors: ['red','green','blue'],
+                                    linewidth: 0.75,
+                                    yaxispos: 'right',
+                                    shadow: true,
+                                    tickmarks: null,
+                                    gutterTop: 10,
+                                    gutterBottom: 15,
+                                    gutterRight: 40,
+                                    backgroundGridVlines: false,
+                                    numyticks: 5,
+                                    numxticks: 0,
+                                    ylabelsCount: 5,
+                                    scaleZerostart: true,
+                                    textAccessible: true,
+                                    noxaxis:true
+                                }
+                            })
+                        }
+        
+                        // Add some data to the data arrays
+                        var len          = data.length,
+                            lastvalue    = RG.isNull(data[len - 1]) ? 26 : data[len - 1],
+                            random_value = RG.random(lastvalue  - 2,lastvalue  + 2);
+                       
+                            var str = $( "#s1" ).text();
+                            var str1 = $( "#s2" ).text();
+                            var str2 = $( "#s3" ).text();
+        
+                        data.push(parseFloat(str)*100);                  
+                      
+                        data1.push(parseFloat(str1)*100);
+                              
+                        data2.push(parseFloat(str2)*100);
+                        
+                        if (data.length > numvalues) {
+                            data = RG.arrayShift(data);
+                            data1 = RG.arrayShift(data1);
+                            data2 = RG.arrayShift(data2);
+                        }
+                             
+            
+                        obj.original_data[0] = data;
+                        obj.original_data[1] = data1;
+                        obj.original_data[2] = data2;
+                        obj.draw();
+                        setTimeout(drawGraph, 1000);
+        
+                        updates++;
+                      
+                    }
+                
+                    drawGraph();
+        
+        
+        
+        
+        
+                    /**
+                    * Add the toggle buttons onclick function
+                    */
+                    document.getElementById("toggleButton").onclick = function (e)
+                    {
+                        if (obj.get('ymax')) {
+                            obj.set('ymax', null)
+                        } else {
+                            obj.set('ymax', 250)
+                        }
+                    }
+                };
+            </script>
+      <!-- Footer -->
+      <footer class="w3-container w3-padding-16 ">
+        <p>
+          Powered by
+          <a href="http://www.linotech.biz/" target="_blank">Linotech</a>
+        </p>
+      </footer>
+
+      <!-- End page content -->
+    </div>
+
+    <script>
+      // Get the Sidebar
+      var mySidebar = document.getElementById("mySidebar");
+
+      // Get the DIV with overlay effect
+      var overlayBg = document.getElementById("myOverlay");
+
+      // Toggle between showing and hiding the sidebar, and add overlay effect
+      function w3_open() {
+        if (mySidebar.style.display === "block") {
+          mySidebar.style.display = "none";
+          overlayBg.style.display = "none";
+        } else {
+          mySidebar.style.display = "block";
+          overlayBg.style.display = "block";
+        }
+      }
+
+      // Close the sidebar with the close button
+      function w3_close() {
+        mySidebar.style.display = "none";
+        overlayBg.style.display = "none";
+      }
+
+      setInterval(function() {
+        // Gets ADC value at every one second
+        GetAbs();
+      }, 1000);
+
+      function GetAbs() {
+        var xhttp = new XMLHttpRequest();
+        var data = "";
+        var data1 = "";
+
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            data = this.responseText;
+            data1 = data.split(",");
+            document.getElementById("s1").innerHTML = data1[0];
+            document.getElementById("s2").innerHTML = data1[1];
+            document.getElementById("s3").innerHTML = data1[2];
+          }
+        };
+        xhttp.open("GET", "/abs_kin", true);
+        xhttp.send();
+      }
+
+      function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 5; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+    </script>
+  </body>
+</html>
+
+
+
+
+
+

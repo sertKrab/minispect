@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+  <head>
+    <title>MINISPECTRO</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+
+    <link rel="stylesheet" href="w3.css" />
+
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      html,
+      body,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: sans-serif;
+      }
+      .w3-sidebar {
+        z-index: 3;
+        width: 250px;
+        top: 43px;
+        bottom: 0;
+        height: inherit;
+      }
+      .blue {
+  color: blue;
+  
+}.red {
+  color: red;
+  
+}.green {
+  color: green;
+  
+}.black {
+  color: black;
+  
+}
+    </style>
+
+    <script>
+      $(document).ready(function() {
+
+        read_std();
+
+        $("button#Blank").click(function() {
+          if (confirm("ยืนยันการตั้งค่าBlank")) {
+            var data = "";
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                data = this.responseText;
+              }
+            };
+            xhttp.open("GET", "/blank", true);
+            xhttp.send();
+          }
+        });
+
+        $("button#save").click(function() {
+          
+          var str = $( "#savename" ).val();
+          if(!str.match(/^([.a-z0-9])+$/i))
+		{
+			alert("กรอกไฟล์เฉพาะตัวเลขและตัวอักษรภาษาอังกฤษเท่านั้น");
+		
+		}else{
+      if (str.length == 0){
+            alert("ไม่พบไฟล์ที่ที่ต้องการ");
+          }else{
+            var data_save = prompt("รายละเอียด", "test");
+            var data = "";
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                data = this.responseText;
+              
+              }
+            };
+            xhttp.open("GET", "/saveconcen?filename="+str+"&data="+data_save, true);
+            xhttp.send();
+          }
+    }
+         
+
+        
+          
+        });
+        $("button#Export").click(function() {
+        
+        var data = "";
+        var str_file = $( "#savename" ).val();
+        if(!str_file.match(/^([.a-z0-9])+$/i))
+		{
+			alert("กรอกไฟล์เฉพาะตัวเลขและตัวอักษรภาษาอังกฤษเท่านั้น");
+		
+		}else{
+      if (str_file.length == 0){
+          alert("ไม่พบไฟล์ที่ที่ต้องการ");
+        }else{
+          var req = new XMLHttpRequest();
+        req.open("GET", "/export?file_name=" + str_file, true);
+        req.responseType = "blob";
+        req.onload = function (event) {
+        var blob = req.response;
+
+        var fileName = req.getResponseHeader("fileName"); //if you have the fileName header available
+        var link=document.createElement('a');
+      
+        link.href=window.URL.createObjectURL(blob);
+        link.download=str_file;
+        link.click();
+};
+
+req.send();
+
+        }
+
+    }
+        
+
+
+      
+      
+    });
+
+      });
+      function read_std() {
+        
+        var xhttp = new XMLHttpRequest();
+        var data = "";
+        var data1 = "";
+
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            data = this.responseText;
+            data1 = data.split(",");
+            data = this.responseText;
+                        data1 = data.split(",");                                               
+                        document.getElementById("n1").innerHTML = data1[0];
+                        document.getElementById("n2").innerHTML = data1[1];
+                        document.getElementById("n3").innerHTML = data1[2];
+                        document.getElementById("n4").innerHTML = data1[3];
+                        document.getElementById("n5").innerHTML = data1[4];
+                        document.getElementById("n6").innerHTML = data1[5];
+                        document.getElementById("n7").innerHTML = data1[6];
+                        document.getElementById("n8").innerHTML = data1[7];
+                        document.getElementById("n9").innerHTML = data1[8];
+                        document.getElementById("n10").innerHTML = data1[9];
+                        document.getElementById("n11").innerHTML = data1[10];
+                        document.getElementById("n12").innerHTML = data1[11];
+                        document.getElementById("n13").innerHTML = data1[12];
+                        document.getElementById("n14").innerHTML = data1[13];
+
+                                                                 
+                        document.getElementById("m1").innerHTML = data1[14];
+                        document.getElementById("m2").innerHTML = data1[15];
+                        document.getElementById("m3").innerHTML = data1[16];
+                        document.getElementById("m4").innerHTML = data1[17];
+                        document.getElementById("m5").innerHTML = data1[18];
+                        document.getElementById("m6").innerHTML = data1[19];
+                        document.getElementById("m7").innerHTML = data1[20];
+                        document.getElementById("m8").innerHTML = data1[21];
+                        document.getElementById("m9").innerHTML = data1[22];
+                        document.getElementById("m10").innerHTML = data1[23];
+                        document.getElementById("m11").innerHTML = data1[24];
+                        document.getElementById("m12").innerHTML = data1[25];
+                        document.getElementById("m13").innerHTML = data1[26];
+                        document.getElementById("m14").innerHTML = data1[27];
+
+                        document.getElementById("c1").innerHTML = data1[28];
+                        document.getElementById("c2").innerHTML = data1[29];
+                        document.getElementById("c3").innerHTML = data1[30];
+                        document.getElementById("c4").innerHTML = data1[31];
+                        document.getElementById("c5").innerHTML = data1[32];
+                        document.getElementById("c6").innerHTML = data1[33];
+                        document.getElementById("c7").innerHTML = data1[34];
+                        document.getElementById("c8").innerHTML = data1[35];
+                        document.getElementById("c9").innerHTML = data1[36];
+                        document.getElementById("c10").innerHTML = data1[37];
+                        document.getElementById("c11").innerHTML = data1[38];
+                        document.getElementById("c12").innerHTML = data1[39];
+                        document.getElementById("c13").innerHTML = data1[40];
+                        document.getElementById("c14").innerHTML = data1[41];
+
+            
+          }
+        };
+        xhttp.open("GET", "/readstdtable", true);
+        xhttp.send();
+      }
+      
+                      
+
+    </script>
+  </head>
+  <body>
+    <!-- Top container -->
+    <div class="w3-bar w3-top w3-blue-gray w3-large" style="z-index:4">
+      <button
+        class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey"
+        onclick="w3_open();"
+      >
+        Menu
+      </button>
+      <span class="w3-bar-item w3-right">Linotech</span>
+    </div>
+    <!-- Sidebar/menu -->
+    <nav
+      class="w3-sidebar w3-collapse w3-white w3-animate-left"
+      style="z-index:3;width:300px;"
+      id="mySidebar"
+    >
+      <br />
+      <div class="w3-container w3-row">
+        <div class="w3-col s8 w3-bar"><span>MINISPECTRO</span><br /></div>
+      </div>
+      <hr />
+      <div class="w3-container"><h5>CONCENTRATION</h5></div>
+      <div class="w3-bar-block">
+        <a
+          href="#"
+          class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black"
+          onclick="w3_close()"
+          title="close menu"
+          ><i class="fa fa-remove fa-fw"></i> Close Menu</a
+        >
+        <a href="index.html" class="w3-bar-item w3-button w3-padding "> ABS</a>
+        <a href="concen.html" class="w3-bar-item w3-button w3-padding w3-blue">
+          CONCENTRATION</a
+        >
+        <a href="cal.html" class="w3-bar-item w3-button w3-padding ">
+          CALCULATION</a
+        >
+        <a href="kinetic.html" class="w3-bar-item w3-button w3-padding">
+          KINETIC</a
+        >
+        <a href="source.html" class="w3-bar-item w3-button w3-padding">
+          Light SOURCE</a
+        >
+       <br /><br />
+      </div>
+    </nav>
+
+    <!-- Overlay effect when opening sidebar on small screens -->
+    <div
+      class="w3-overlay w3-hide-large w3-animate-opacity"
+      onclick="w3_close()"
+      style="cursor:pointer"
+      title="close side menu"
+      id="myOverlay"
+    ></div>
+    <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+      <!-- Header -->
+      <header class="w3-container" style="padding-top:22px">
+        <h5> CONCENTRATION</h5>
+      </header>
+      <div class="w3-row-padding w3-margin-bottom w3-padding-16" id="collorch">
+        <div class="w3-quarter w3-padding-16">
+          <div class="w3-container w3-round w3-blue-gray w3-padding-16">
+            <div class="w3-left"></div>
+            <div class="w3-center">
+              <h4>Abs</h4>
+              <h3 id="s1">0</h3>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        <div class="w3-quarter w3-padding-16">
+          <div class="w3-container w3-round w3-blue-gray w3-padding-16">
+            <div class="w3-left"></div>
+            <div class="w3-center">
+              <h4>Concentration</h4>
+              <h3 id="s2">0</h3>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        <div class="w3-quarter w3-padding-16">
+          <div class="w3-container w3-round w3-blue-gray w3-padding-16">
+            <div class="w3-left"></div>
+            <div class="w3-center">
+              <h4>Equation</h4>
+              <h3 id="s3">0</h3>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+      </div>
+      <div class="w3-container w3-row-padding w3-threequarter ">
+        <div class="w3-quarter">
+          <p>
+            <button
+              id="Blank"
+              class="w3-button w3-xlarge w3-round w3-block w3-dark-grey w3-center-align"
+            >
+              Blank
+            </button>
+          </p>
+        </div>
+        <div class="w3-quarter ">
+          <p>
+            <button
+              id="save"
+              class="w3-button w3-xlarge w3-round  w3-block w3-dark-grey w3-center-align"
+            >
+              Save
+            </button>
+          </p>
+        </div>
+        <div class="w3-quarter ">
+            <p>
+              <button
+                id="Export"
+                class="w3-button w3-xlarge w3-round  w3-block w3-dark-grey w3-center-align"
+              >
+              Export
+              </button>
+            </p>
+          </div>
+        <div class="w3-quarter ">
+            <span>
+                File name
+                <input class="w3-input w3-blue-gray  w3-mobile " id="savename" type="text" value=""/>
+            </span>
+            
+         
+           
+         
+         </div>
+       
+      </div>
+
+     
+      
+      <div class="w3-container w3-row-padding  ">
+        <table class="w3-table-all w3-card-4  w3-threequarter">
+          <tr>
+            <th>name</th>
+            <th>m</th>
+            <th>c</th>
+            <th>active</th>
+            <th>delete</th>
+          </tr>
+          <tr>
+            <td id="n1">0</td>
+            <td id="m1">0</td>
+            <td id="c1">0</td>
+            <td>
+              <button
+                onclick="stdTable(1)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(1)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n2">0</td>
+            <td id="m2">0</td>
+            <td id="c2">0</td>
+            <td>
+              <button
+                onclick="stdTable(2)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(2)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n3">0</td>
+            <td id="m3">0</td>
+            <td id="c3">0</td>
+            <td>
+              <button
+                onclick="stdTable(3)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(3)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n4">0</td>
+            <td id="m4">0</td>
+            <td id="c4">0</td>
+            <td>
+              <button
+                onclick="stdTable(4)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(4)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+
+          <tr>
+            <td id="n5">0</td>
+            <td id="m5">0</td>
+            <td id="c5">0</td>
+            <td>
+              <button
+                onclick="stdTable(5)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(5)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n6">0</td>
+            <td id="m6">0</td>
+            <td id="c6">0</td>
+            <td>
+              <button
+                onclick="stdTable(6)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(6)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n7">0</td>
+            <td id="m7">0</td>
+            <td id="c7">0</td>
+            <td>
+              <button
+                onclick="stdTable(7)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(7)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n8">0</td>
+            <td id="m8">0</td>
+            <td id="c8">0</td>
+            <td>
+              <button
+                onclick="stdTable(8)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(8)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n9">0</td>
+            <td id="m9">0</td>
+            <td id="c9">0</td>
+            <td>
+              <button
+                onclick="stdTable(9)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(9)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n10">0</td>
+            <td id="m10">0</td>
+            <td id="c10">0</td>
+            <td>
+              <button
+                onclick="stdTable(10)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(10)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n11">0</td>
+            <td id="m11">0</td>
+            <td id="c11">0</td>
+            <td>
+              <button
+                onclick="stdTable(11)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(11)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n12">0</td>
+            <td id="m12">0</td>
+            <td id="c12">0</td>
+            <td>
+              <button
+                onclick="stdTable(12)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+
+            </td>
+            <td>
+              <button
+                onclick="stdDel(12)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n13">0</td>
+            <td id="m13">0</td>
+            <td id="c13">0</td>
+            <td>
+              <button
+                onclick="stdTable(13)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(13)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td id="n14">0</td>
+            <td id="m14">0</td>
+            <td id="c14">0</td>
+            <td>
+              <button
+                onclick="stdTable(14)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+                active
+              </button>
+            </td>
+            <td>
+              <button
+                onclick="stdDel(14)"
+                class="w3-button w3-medium w3-mobile w3-dark-grey w3-center-align"
+              >
+              delete
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+
+    </div>
+
+      <!-- Footer -->
+      <footer class="w3-container w3-padding-16 ">
+        <p>
+          Powered by
+          <a href="http://www.linotech.biz/" target="_blank">Linotech</a>
+        </p>
+      </footer>
+
+      <!-- End page content -->
+    </div>
+
+    <script>
+      // Get the Sidebar
+      var mySidebar = document.getElementById("mySidebar");
+
+      // Get the DIV with overlay effect
+      var overlayBg = document.getElementById("myOverlay");
+
+      // Toggle between showing and hiding the sidebar, and add overlay effect
+      function w3_open() {
+        if (mySidebar.style.display === "block") {
+          mySidebar.style.display = "none";
+          overlayBg.style.display = "none";
+        } else {
+          mySidebar.style.display = "block";
+          overlayBg.style.display = "block";
+        }
+      }
+
+      // Close the sidebar with the close button
+      function w3_close() {
+        mySidebar.style.display = "none";
+        overlayBg.style.display = "none";
+      }
+
+      setInterval(function() {
+        // Gets ADC value at every one second
+        GetAbs();
+      }, 1000);
+
+      function GetAbs() {
+        var xhttp = new XMLHttpRequest();
+        var data = "";
+        var data1 = "";
+
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            data = this.responseText;
+            data1 = data.split(",");
+            document.getElementById("s1").innerHTML = data1[0];
+            document.getElementById("s2").innerHTML = data1[1];
+            document.getElementById("s3").innerHTML = data1[2];
+          }
+        };
+        xhttp.open("GET", "/con", true);
+        xhttp.send();
+      }
+     
+      function stdTable(id_table) {
+        id_table = id_table-1;
+        var xhttp = new XMLHttpRequest();
+        var data = "";
+        var data1 = "";
+       
+
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            data = this.responseText;
+
+          
+
+            if(data == "0")
+            {
+              $("#collorch").css("color","red");
+              
+            }else if(data == "1")
+            {
+              $("#collorch").css("color","green");
+              
+            }else if(data == "2")
+            {
+              $("#collorch").css("color","blue");
+            }else
+            {
+              $("#collorch").css("color","black");
+            }
+            
+          }
+        };
+        xhttp.open("GET", "/stdTable?id_="+id_table, true);
+        xhttp.send();
+      }
+
+
+      function stdDel(id_table) {
+        id_table = id_table-1;
+        
+        var data = "";
+        var data1 = "";
+       
+        if(confirm("ยืนยันการลบ"))
+        {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            data = this.responseText;
+
+          }
+        };
+        xhttp.open("GET", "/stdDel?id_="+id_table, true);
+        xhttp.send();
+
+        }
+
+        
+      }
+
+
+
+      
+    </script>
+  </body>
+</html>
